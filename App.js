@@ -1,10 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-//import firebase from 'firebase/app';
-//import 'firebase/firestore';
-//import 'firebase/auth';
+import { StatusBar } from "expo-status-bar";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+//const firebase = require("firebase/app");
+import 'firebase/database';
 import { getDocs } from "firebase/firestore";
-import {utilisateurCollection} from 'firebase';
+import { utilisateurCollection } from "firebase";
 //import {casiercollection} from 'firebase';
 
 export default function App() {
@@ -13,7 +15,8 @@ export default function App() {
   const fetchUsers = async () => {
     const userList = []; // je créer une liste vide
     const querySnapshot = await getDocs(utilisateurCollection);
-    querySnapshot.forEach((doc) => { // chaque élément est ajouté à la liste
+    querySnapshot.forEach((doc) => {
+      // chaque élément est ajouté à la liste
       userList.push({ id: doc.id, ...doc.data() });
     });
     setUsers(userList); // je stocke ma liste dans l'état de l'application
@@ -22,11 +25,13 @@ export default function App() {
     fetchUsers();
   }, []);
 }
-{userList.map((user) => (
-  <Text key={user.id}>
-    id: {user.id} - name: {user.name} - email: {user.email},
-  </Text>
-))}
+{
+  userList.map((user) => (
+    <Text key={user.id}>
+      id: {user.id} - name: {user.name} - email: {user.email},
+    </Text>
+  ));
+}
 
 /*export default function App() {
   return (
@@ -44,8 +49,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
