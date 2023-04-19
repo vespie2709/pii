@@ -1,28 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
 import "firebase/database";
+import firestore from '@react-native-firebase/firestore'
 import { getDocs,updateDoc,doc } from "firebase/firestore";
 import styles from "../theme/styles";
 import { casierCollection } from "../firebase";
 
-const handleRefresh = async () => {
-  setRefreshing(true); // Indique que la page est en cours de réactualisation
-  try {
-    const listeCasier = [];
-    const querySnapshot = await getDocs(casierCollection);
-    querySnapshot.forEach((doc) => {
-      listeCasier.push({ id: doc.id, ...doc.data() });
-    });
-    setLockers(listeCasier);
-  } catch (error) {
-    console.error("Error fetching lockers:", error);
-  }
-  setRefreshing(false); // Indique que la page a été réactualisée
-};
-
-const LockersScreen = ({navigation}) => {
+const LockersScreen = ({navigation, route}) => {
   const [lockers, setLockers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  const {user} = route.params;
 
   
 const handleRefresh = async () => {
@@ -108,6 +96,9 @@ const handleRefresh = async () => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       />
+      <View>
+        <Text>{user.email}</Text>
+      </View>
     </React.Fragment>
   );
 };
