@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
 import "firebase/database";
 import firestore from '@react-native-firebase/firestore'
-import { getDocs,updateDoc,doc } from "firebase/firestore";
+import { getDocs,updateDoc,doc, arrayUnion, serverTimestamp, setData, FieldValue, set } from "firebase/firestore";
 import styles from "../theme/styles";
-import { casierCollection } from "../firebase";
+import { casierCollection, utilisateurCollection } from "../firebase";
+import casier from "../components/casier";
 
 const LockersScreen = ({navigation, route}) => {
   const [lockers, setLockers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const {user} = route.params;
-
   
 const handleRefresh = async () => {
   setRefreshing(true); // Indique que la page est en cours de réactualisation
@@ -49,7 +49,10 @@ const handleRefresh = async () => {
   const updateNonDispo = async(item) => {
     console.log("Réservation confirmée");
     const casierRef = doc(casierCollection, item.id);
-    await updateDoc(casierRef, { dispo: false });  
+    const userRef = doc(utilisateurCollection, user.id);
+    await updateDoc(casierRef, { dispo: false, utilisateur: user.id}); 
+    //const soncasier = new casier(item.id, true, serverTimestamp(), '') 
+    await updateDoc(userRef, {"casiers" : arrayUnion({"id" : item.id, "etat" : true, "heureD" : '', "heureF" : ''})});
     handleRefresh();
     Alert.alert("Réservation confirmée !");
   };
@@ -78,7 +81,6 @@ const handleRefresh = async () => {
     );
   };
 
- 
   return (
     <React.Fragment>
       <Text style = {styles.consigne}>Choisissez un casier parmi les casiers disponibles :</Text>
@@ -96,9 +98,13 @@ const handleRefresh = async () => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       />
-      <View>
-        <Text>{user.email}</Text>
-      </View>
+      <TouchableOpacity
+        style={styles.casier}
+        onPress={() => navigation.navigate("Profil", {
+          user : user,})}
+        ><Text style={styles.casierText}>Accédez à votre profil</Text>
+      </TouchableOpacity>
+
     </React.Fragment>
   );
 };

@@ -73,9 +73,6 @@ const AuthScreen= ({navigation}) => {
       >
         <Text style={styles.loginText}>Se connecter</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonContainer} onPress={resetPassword}>
-        <Text>Mot de passe oublié ?</Text>
-      </TouchableOpacity>
       <TouchableOpacity style={styles.buttonContainer} onPress={signUp}>
         <Text>S'inscrire</Text>
       </TouchableOpacity>

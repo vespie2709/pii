@@ -16,7 +16,7 @@ const Input = ({ placeholder, imageUrl, hideCharacters, onChangeText }) => {
         placeholder={placeholder}
         keyboardType="email-address"
         autoCapitalize="none"
-        secureTextEntry={hideCharacters}
+        secureTextEntry={hideCharacters ? true : false}
         onChangeText={onChangeText}
       />
     </View>

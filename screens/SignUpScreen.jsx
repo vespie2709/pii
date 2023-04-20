@@ -1,10 +1,10 @@
 import "firebase/database";
 import "firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
 import { useState, useEffect } from 'react';
 import styles from "../theme/styles";
 import Input from "../components/Input";
-import firestore from '@react-native-firebase/firestore'
-import { getDocs,updateDoc,doc } from "firebase/firestore";
+import { getDocs,updateDoc,addDoc } from "firebase/firestore";
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
 import { utilisateurCollection } from "../firebase";
 //import authenticateUser from "../api/authentication";
@@ -39,16 +39,28 @@ const SignUpScreen= ({navigation}) => {
 
   const signUp = async () => {
     try {
-      await utilisateurCollection.doc().set({
-        nom,
-        prenom,
-        email,
-        mdp,
+      if (nom === "" || prenom === "" || email === "" || mdp === "") {
+        Alert.alert("Tous les champs doivent être remplis !");
+        return;
+      }
+      else {
+      const docRef = await addDoc(utilisateurCollection,
+      {
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        mdp:mdp
       });
-      Alert.alert("Inscription réussie", "Vous pouvez maintenant vous connecter");
+      Alert.alert("Succès", "Utilisateur ajouté avec succès");
+      navigation.navigate("Authentification")
+      // Réinitialiser les champs
+      setNom("");
+      setPrenom("");
+      setEmail("");
+      setMdp("");}
     } catch (error) {
-      console.error("Erreur lors de l'inscription :", error);
-      Alert.alert("Erreur lors de l'inscription", "Veuillez réessayer plus tard");
+      console.error("Error adding user:", error);
+      Alert.alert("Erreur", "Une erreur s'est produite lors de l'ajout de l'utilisateur");
     }
   };
 
