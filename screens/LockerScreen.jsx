@@ -5,7 +5,6 @@ import firestore from '@react-native-firebase/firestore'
 import { getDocs,updateDoc,doc, arrayUnion, serverTimestamp, setData, FieldValue, set } from "firebase/firestore";
 import styles from "../theme/styles";
 import { casierCollection, utilisateurCollection } from "../firebase";
-import casier from "../components/casier";
 
 const LockersScreen = ({navigation, route}) => {
   const [lockers, setLockers] = useState([]);
@@ -51,8 +50,7 @@ const handleRefresh = async () => {
     const casierRef = doc(casierCollection, item.id);
     const userRef = doc(utilisateurCollection, user.id);
     await updateDoc(casierRef, { dispo: false, utilisateur: user.id}); 
-    //const soncasier = new casier(item.id, true, serverTimestamp(), '') 
-    await updateDoc(userRef, {"casiers" : arrayUnion({"id" : item.id, "etat" : true, "heureD" : '', "heureF" : ''})});
+    await updateDoc(userRef, {"casiers" : arrayUnion({"id" : item.id, "etat" : true, "heureD" : serverTimestamp(), "heureF" : ''})});
     handleRefresh();
     Alert.alert("Réservation confirmée !");
   };
