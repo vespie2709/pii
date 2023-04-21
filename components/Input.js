@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../theme/styles";
 import { StyleSheet, View, Image, TextInput, Text } from "react-native";
 
-const Input = ({ placeholder, imageUrl, hideCharacters, onChangeText }) => {
+const Input = ({ placeholder, imageUrl, hideCharacters, onChangeText, defaultValue }) => {
   return (
     <View style={styles.inputContainer}>
       <Image
@@ -12,6 +12,7 @@ const Input = ({ placeholder, imageUrl, hideCharacters, onChangeText }) => {
         }}
       />
       <TextInput
+        defaultValue={defaultValue}
         style={styles.inputText}
         placeholder={placeholder}
         keyboardType="email-address"

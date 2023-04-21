@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
+import { FlatList, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
 import "firebase/database";
-import firestore from '@react-native-firebase/firestore'
-import { getDocs,updateDoc,doc, arrayUnion, serverTimestamp, setData, FieldValue, set } from "firebase/firestore";
+import { getDocs,updateDoc,doc, arrayUnion, Timestamp} from "firebase/firestore";
 import styles from "../theme/styles";
 import { casierCollection, utilisateurCollection } from "../firebase";
 
@@ -50,7 +49,7 @@ const handleRefresh = async () => {
     const casierRef = doc(casierCollection, item.id);
     const userRef = doc(utilisateurCollection, user.id);
     await updateDoc(casierRef, { dispo: false, utilisateur: user.id}); 
-    await updateDoc(userRef, {"casiers" : arrayUnion({"id" : item.id, "etat" : true, "heureD" : serverTimestamp(), "heureF" : ''})});
+    await updateDoc(userRef, {"casiers" : arrayUnion({"id" : item.id, "etat" : true, "heureD" : Timestamp.now(), "heureF" : ''})});
     handleRefresh();
     Alert.alert("Réservation confirmée !");
   };

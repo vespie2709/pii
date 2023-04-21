@@ -47,10 +47,6 @@ const AuthScreen= ({navigation}) => {
     ;
   };
 
-  const resetPassword = () => {
-    Alert.alert("Action sélectionnée", "Mise à jour du mot de passe");
-  };
-
   const signUp = () => {
     navigation.navigate("Inscription");
   };
