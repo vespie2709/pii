@@ -22,10 +22,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  profil:
-  {
-    
-  },
   consigne: {
     marginTop : 10,
     marginBottom : 10,

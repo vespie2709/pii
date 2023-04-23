@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
+import { FlatList, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
 import styles from "../theme/styles";
-import { getDocs,updateDoc,doc, arrayRemove, getDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import { updateDoc,doc, arrayRemove, getDoc, arrayUnion, Timestamp } from "firebase/firestore";
 import { casierCollection, utilisateurCollection } from "../firebase";
 import { db } from "../firebase";
 
@@ -23,7 +23,7 @@ const ProfilScreen= ({navigation, route}) => {
       };
 
       const handleRefresh = async () => {
-        setRefreshing(true); // Indique que la page est en cours de réactualisation
+        setRefreshing(true);
         try {
             const docRef = doc(db, "utilisateur", user.id);
             const utilisateur = await getDoc(docRef);
@@ -63,9 +63,7 @@ const ProfilScreen= ({navigation, route}) => {
 
     const renderItem = ({ item }) => {
         return (
-          <TouchableOpacity  style={styles.casier} onPress={ () => handleReservation(item)/*navigation.navigate("Réservation du casier", {
-            casier: item,
-          })*/}>
+          <TouchableOpacity  style={styles.casier} onPress={ () => handleReservation(item)}>
             <Text style={styles.casierText}>{item.id}°</Text>
           </TouchableOpacity >
         );
@@ -88,11 +86,11 @@ const ProfilScreen= ({navigation, route}) => {
     return (
         <React.Fragment>
           <Text style = {styles.consigne}>Informations personnelles :</Text>
-          <TouchableOpacity style={styles.casier} onPress={ () => navigation.navigate("Modification du profil", {user: user})}><Text>Modifier</Text></TouchableOpacity>
           <Text style = {styles.consigne}>Nom : {user.nom}</Text>
           <Text style = {styles.consigne}>Prénom : {user.prenom}</Text>
           <Text style = {styles.consigne}>E-mail : {user.email}</Text>
           <Text style = {styles.consigne}>Mot de passe : {user.mdp}</Text>
+          <TouchableOpacity style={styles.casier} onPress={ () => navigation.navigate("Modification du profil", {user: user})}><Text style={styles.casierText}>Modifier</Text></TouchableOpacity>
           <Text style = {styles.consigne}>Réservations en cours :</Text>
           <FlatList
         data={casiersEnCours}

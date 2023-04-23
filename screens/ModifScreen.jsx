@@ -1,17 +1,16 @@
 import "firebase/database";
 import "firebase/firestore";
-import firestore from '@react-native-firebase/firestore';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from "../theme/styles";
 import Input from "../components/Input";
-import { getDocs,updateDoc,addDoc,doc , getDoc} from "firebase/firestore";
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
+import { updateDoc, doc , getDoc} from "firebase/firestore";
+import { Text, View, TouchableOpacity, Alert} from "react-native";
 import { utilisateurCollection } from "../firebase";
-//import authenticateUser from "../api/authentication";
 
 const ModifScreen= ({navigation, route}) => {
 
-const {user} = route.params;
+  //Récupération de l'utilisateur connecté
+  const {user} = route.params;
     
   const [nom, setNom] = useState(user.nom);
   const [prenom, setPrenom] = useState(user.prenom);
@@ -30,7 +29,7 @@ const {user} = route.params;
         const nouveau = await getDoc(userRef);
       Alert.alert("Succès", "Modification effectuée avec succès");
       navigation.navigate("Profil", {user: nouveau.data()});
-      // Réinitialiser les champs
+      // Réinitialisation les champs
       setNom("");
       setPrenom("");
       setEmail("");

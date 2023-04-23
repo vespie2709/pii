@@ -6,13 +6,14 @@ import styles from "../theme/styles";
 import { casierCollection, utilisateurCollection } from "../firebase";
 
 const LockersScreen = ({navigation, route}) => {
+
   const [lockers, setLockers] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const {user} = route.params;
   
 const handleRefresh = async () => {
-  setRefreshing(true); // Indique que la page est en cours de réactualisation
+  setRefreshing(true);
   try {
     const listeCasier = [];
     const querySnapshot = await getDocs(casierCollection);
@@ -67,9 +68,7 @@ const handleRefresh = async () => {
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity  style={styles.casier} onPress={ () => handleReservation(item)/*navigation.navigate("Réservation du casier", {
-        casier: item,
-      })*/}>
+      <TouchableOpacity  style={styles.casier} onPress={ () => handleReservation(item)}>
         <Text style={styles.casierText}>{item.id}°</Text>
         <Text style={styles.casierText}>{item.hauteur}cm</Text>
         <Text style={styles.casierText}>{item.largeur}cm</Text>
@@ -80,28 +79,41 @@ const handleRefresh = async () => {
 
   return (
     <React.Fragment>
-      <Text style = {styles.consigne}>Choisissez un casier parmi les casiers disponibles :</Text>
-      <View style={styles.legend}>
-        <Text>Numéro</Text>
-        <Text>Hauteur</Text>
-        <Text>Largeur</Text>
-        <Text>Profondeur</Text>
-      </View>
-      <FlatList
-        data={filteredLockers}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
-      <TouchableOpacity
-        style={styles.casier}
-        onPress={() => navigation.navigate("Profil", {
-          user : user,})}
-        ><Text style={styles.casierText}>Accédez à votre profil</Text>
-      </TouchableOpacity>
-
+      {filteredLockers.length === 0 ? (
+        <View>
+          <Text style={styles.consigne}>Aucun casier n'est disponible :(</Text>
+        <TouchableOpacity
+            style={styles.casier}
+            onPress={() => navigation.navigate("Profil", { user })}
+          >
+            <Text style={[styles.casierText, { textAlign: "center" }]}>Accéder à mon profil</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <React.Fragment>
+          <Text style={styles.consigne}>Choisissez un casier parmi les casiers disponibles :</Text>
+          <View style={styles.legend}>
+            <Text>Numéro</Text>
+            <Text>Hauteur</Text>
+            <Text>Largeur</Text>
+            <Text>Profondeur</Text>
+          </View>
+          <FlatList
+            data={filteredLockers}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+            }
+          />
+          <TouchableOpacity
+            style={styles.casier}
+            onPress={() => navigation.navigate("Profil", { user })}
+          >
+            <Text style={[styles.casierText, { textAlign: "center" }]}>Accéder à mon profil</Text>
+          </TouchableOpacity>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };

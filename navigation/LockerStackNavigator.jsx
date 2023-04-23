@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LockerScreen from "../screens/LockerScreen";
-import LockerDetailScreen from "../screens/LockerDetailScreen";
 import AuthScreen from "../screens/AuthScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ProfilScreen from "../screens/ProfilScreen";

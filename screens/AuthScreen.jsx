@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import styles from "../theme/styles";
 import Input from "../components/Input";
 import { getDocs,updateDoc,doc } from "firebase/firestore";
-import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert, RefreshControl } from "react-native";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
 import { utilisateurCollection } from "../firebase";
-//import authenticateUser from "../api/authentication";
 
 const AuthScreen= ({navigation}) => {
+
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
