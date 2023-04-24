@@ -78,18 +78,6 @@ const handleRefresh = async () => {
   };
 
   return (
-    <React.Fragment>
-      {filteredLockers.length === 0 ? (
-        <View>
-          <Text style={styles.consigne}>Aucun casier n'est disponible :(</Text>
-        <TouchableOpacity
-            style={styles.casier}
-            onPress={() => navigation.navigate("Profil", { user })}
-          >
-            <Text style={[styles.casierText, { textAlign: "center" }]}>Accéder à mon profil</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
         <React.Fragment>
           <Text style={styles.consigne}>Choisissez un casier parmi les casiers disponibles :</Text>
           <View style={styles.legend}>
@@ -113,8 +101,6 @@ const handleRefresh = async () => {
             <Text style={[styles.casierText, { textAlign: "center" }]}>Accéder à mon profil</Text>
           </TouchableOpacity>
         </React.Fragment>
-      )}
-    </React.Fragment>
   );
 };
 
